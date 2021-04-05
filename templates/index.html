@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Final Project</title>
+        <h1>Twitter Sentiment analysis</h1>
+    </head>
+    <body>
+        <div>
+            <label>which account you want to analyze</label>
+        </div>
+        <div>
+            <form action="{{ url_for("index")}}" method="post"> 
+            <input type="text" name="handle" id="handle">
+            <button type="submit">sumbit</button> 
+        </div>
+        
+    </body>
+</html>
