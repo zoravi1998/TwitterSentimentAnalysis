@@ -154,6 +154,3 @@ def main(tweeterhandle):
         print(tweet['text'])
     #calling graph function    
     api.plotgraph()
-
-if __name__ == "__main__":
-    main()
