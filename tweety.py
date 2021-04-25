@@ -1,9 +1,7 @@
-import re
-import tweepy
+import re,tweepy
 from tweepy import OAuthHandler
 from textblob import TextBlob
 from googletrans import Translator
-import matplotlib.pyplot as plt
 
 class TwitterClient(object):
     '''
@@ -11,7 +9,7 @@ class TwitterClient(object):
     
     '''
     x_axis=['neg','neu','pos']
-    y_axis=[0,0,0]
+    bar_y=[0,0,0]
     scatter_x=[]
     scatter_y=[]
     def __init__(self):
@@ -23,7 +21,6 @@ class TwitterClient(object):
         consumer_secret = 'RIY3gxKtQiTIs87MmqShBHixd1jdaIiHR18pZc2xZMv3U9WXsg'
         access_token = '1339638829607657472-lfx713UxZgxsH9OxBVzyKDKDe19UFJ'
         access_token_secret = 'pxSINy8RJ7Mcs3E9yHcWXPqRBjJaQigMJIfNyK3lySNdF'
-        
         # attempt authentication
         try:
             # create OAuthHandler object
@@ -54,22 +51,22 @@ class TwitterClient(object):
         analysis = TextBlob(self.clean_tweet(tweet))
         # set sentiment
         if analysis.sentiment.polarity > 0:
-            self.y_axis[2]+=1
-            self.scatter_x.append(int(analysis.sentiment.polarity))
-            self.scatter_y.append('pos')
+            self.bar_y[2]+=1
+            self.scatter_y.append(analysis.sentiment.polarity)
+            self.scatter_x.append('pos')
             return 'positive'
         elif analysis.sentiment.polarity == 0:
-            self.y_axis[1]+=1
-            self.scatter_x.append(int(analysis.sentiment.polarity))
-            self.scatter_y.append('neu')
+            self.bar_y[1]+=1
+            self.scatter_y.append(analysis.sentiment.polarity)
+            self.scatter_x.append('neu')
             return 'neutral'
         else:
-            self.y_axis[0]+=1
-            self.scatter_x.append(int(analysis.sentiment.polarity))
-            self.scatter_y.append('neg')
+            self.bar_y[0]+=1
+            self.scatter_y.append(analysis.sentiment.polarity)
+            self.scatter_x.append('neg')
             return 'negative'
  
-    def get_tweets(self, query, count = 10):
+    def get_tweets(self, query, count ):
         '''
         Main function to fetch tweets and parse them.
         '''
@@ -111,46 +108,3 @@ class TwitterClient(object):
         except tweepy.TweepError as e:
             # print error (if any)
             print("Error : " + str(e))
-
-    def plotgraph(self):
-        bar_graph=plt.figure(1)
-        plt.bar(self.x_axis,self.y_axis)
-        scatter_plot=plt.figure(2)
-        plt.scatter(self.scatter_x,self.scatter_y)
-
-        plt.title("Twitter Sentiment Analysis")
-        plt.show()
-
-
-def main(tweeterhandle):
-    # creating object of TwitterClient Class
-    api = TwitterClient()
-    # calling function to get tweets
-    tweets = api.get_tweets(query = tweeterhandle, count = 200)
- 
-    # picking positive tweets from tweets
-    ptweets = [tweet for tweet in tweets if tweet['sentiment'] 
-               == 'positive']
-    # percentage of positive tweets
-    print("Positive tweets percentage: {} %"
-          .format(100*len(ptweets)/len(tweets)))
-    # picking negative tweets from tweets
-    ntweets = [tweet for tweet in tweets if 
-               tweet['sentiment'] == 'negative']
-    # percentage of negative tweets
-    #print("Negative tweets percentage: {} %".format(100*len(ntweets)/len(tweets)))
-    # percentage of neutral tweets
-    #print("Neutral tweets percentage: {} % \
-    #    ".format(100*len(tweets - ntweets - ptweets)/len(tweets)))
- 
-    # printing first 5 positive tweets
-    print("\n\nPositive tweets:")
-    for tweet in ptweets[:10]:
-        print(tweet['text'])
- 
-    # printing first 5 negative tweets
-    print("\n\nNegative tweets:")
-    for tweet in ntweets[:10]:
-        print(tweet['text'])
-    #calling graph function    
-    api.plotgraph()

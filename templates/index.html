@@ -1,19 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Final Project</title>
-        <h1>Twitter Sentiment analysis</h1>
-    </head>
-    <body>
-        <div>
-            <label>which account you want to analyze</label>
-        </div>
-        <div>
-            <form action="{{ url_for("index")}}" method="post"> 
-            <input type="text" name="handle" id="handle">
-            <button type="submit">sumbit</button> 
-        </div>
-        
-    </body>
+<html>
+  <head>
+    <title>Twitter Analyzer</title>
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.ico') }}"
+    />
+  </head>
+
+  <body>
+    <div id="container">
+      <div id="top background image" style="float: left">
+        <img
+          border="0"
+          src="http://i131.photobucket.com/albums/p287/afroze100/backgroundnew.png"
+          width="1000px"
+        />
+      </div>
+
+      <div
+        id="side-bar"
+        style="
+          background-color: #c0deed;
+          height: 480px;
+          width: 200px;
+          float: left;
+        "
+      >
+        <ul class="navbar">
+          <li>
+            <a href="/" style="color: yellow"><b>Home</b></a>
+          </li>
+          <li>
+            <a href="/about" style="color: yellow"><b>About</b></a>
+          </li>
+          <li>
+            <a href="/additionals" style="color: yellow"
+              ><b>Additionals</b></a
+            >
+          </li>
+          <li>
+            <a href="/contact" style="color: yellow"><b>Contact</b></a>
+          </li>
+        </ul>
+      </div>
+
+      <div
+        id="content"
+        style="
+          background-color: #c0deed;
+          height: 448;
+          width: 768px;
+          float: left;"
+      >
+        <div class="error" style="color: red"></div>
+        <font color="#47525C"
+          ><h2><p style="margin-left: 180px">Enter Twitter Account Name</p></h2>
+          <form action="{{ url_for("index")}}" method="post">
+            <input type="text" name="handle" id="handle"style="margin-left: 200px"/>
+            <button type="submit">Sumbit</button>
+          </form>
+        </font>
+        <!--<button id="myButton" >View Result</button>
+        <script type="text/javascript">
+            document.getElementById("myButton").onclick = function () {
+                window.open("/result",'_blank');
+            };
+        </script>-->
+
+        <hr color="#1E90FF" />
+        <br />
+
+        <font color="#47525C" align="justify">
+          <p>
+            <b>TweetScore</b> displays the popularity score of a search term of
+            your choice from positive 100 to negative 100, using our
+            state-of-the-art algorithm. A score near postive 100 signifies your
+            search query is highly famous on Twitter, while a score near
+            negative 100 signifies a highly infamous search query. A score near
+            0 means that the query is not popular on Twitter.
+          </p>
+        </font>
+      </div>
+
+      <div
+        id="footer"
+        style="background-color: #1e90ff; clear: both; text-align: center"
+      >
+        <font color="#EEEEEE"> Developed by Anurag Diwedi and Anuj Kumar </font>
+      </div>
+    </div>
+  </body>
+
+  <style type="text/css">
+    #container {
+      width: 1000px;
+      height: 700px;
+      background-color: #c0deed;
+      margin: 0px auto 0px auto;
+    }
+
+    #features {
+      display: block;
+      background: #1e90ff;
+      border: 1px solid #aaa;
+      border-width: 2px 2px;
+      margin: 0px 0px;
+      padding: 0px;
+      text-align: center;
+    }
+
+    #features li {
+      display: inline;
+    }
+
+    #features a:link,
+    a:visited {
+      background-color: #1e90ff;
+      display: inline-block;
+      padding: 5px 25px;
+    }
+
+    #features a:hover,
+    a:active {
+      background-color: #1256ff;
+    }
+
+    ul.navbar {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      position: absolute;
+      top: 12em;
+      width: 9em;
+    }
+
+    ul.navbar li {
+      background: #1e90ff;
+      margin: 0.5em 0;
+      padding: 0.3em;
+      border-right: 1em solid black;
+    }
+
+    ul.navbar a {
+      text-decoration: none;
+    }
+
+    ul.navbar a:link,
+    a:visited {
+      background-color: #1e90ff;
+      display: inline-block;
+      padding: auto;
+    }
+
+    ul.navbar a:hover,
+    a:active {
+      background-color: #1256ff;
+    }
+
+    #content {
+      padding: 1em 2em 1em 0em;
+    }
+  </style>
 </html>

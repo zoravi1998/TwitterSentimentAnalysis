@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Twitter Sentiment Analysis</title>
+    <meta chartset="UTF-8" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.1.1/dist/chart.min.js"></script>
+    <style>
+      body {
+        width: 90%;
+        margin: auto;
+        font-family: "Helvetica Neue";
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="bargraph" width="400" height="400" style="display: inline">
+      <script>
+        var ctx=document.getElementById("bargraph").getContext("2d");
+        var barChart = new Chart(ctx, {
+            type:"bar",
+            data:{
+                labels:['pos','neu','neg'],
+                datasets:[{
+                    label:"Data points",
+                    data:{{ bargraphdata | safe}},
+                    backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 159, 64, 1)'
+                ],
+                    borderWidth:1
+                }]
+            },
+            options:{
+                responsive:false
+            }
+        });
+      </script>
+    </canvas>
+
+    <canvas id="scatter" width="400" height="400" style="display: inline">
+      <script>
+        var sclist=[]
+        {% for point in scatter_data %}
+        var a = {{ point[0] }};
+        var b = {{ point[1] }};
+        var ob={ x: a, y:b };
+        sclist.push(ob) ;
+        {% endfor %}
+        var ctx = document.getElementById("scatter").getContext("2d");
+        var scatter = new Chart(ctx,{
+            type:'scatter',
+            data:{
+
+                datasets:[{
+                  label:'Scatter Dataset',
+                    data: sclist,
+                    backgroundColor: 'rgb(255, 99, 132)'
+                }]
+            },
+            options: {
+                  scales: {
+                      x: {
+                      type: 'linear',
+                      position: 'bottom'
+                      }
+                  },
+                  responsive:false
+              }
+        });
+      </script>
+    </canvas>
+    <div>
+      <h3>Positive tweets</h3>
+      <p>
+        {% for tweet in ptweets %}
+        <li>{{ tweet | safe }}</li>
+        {% endfor %}
+      </p>
+    </div>
+    <div>
+      <h3>Negative tweets</h3>
+      <p>
+        {% for tweet in ntweets %}
+        <li>{{ tweet | safe }}</li>
+        {% endfor %}
+      </p>
+    </div>
+    <div>
+      <h3>Neutral tweets</h3>
+      <p>
+        {% for tweet in neutweets %}
+        <li>{{ tweet | safe }}</li>
+        {% endfor %}
+      </p>
+    </div>
+  </body>
+</html>
