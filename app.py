@@ -50,6 +50,7 @@ def index():
     global tweeterhandle
     if request.method == 'POST':
         tweeterhandle = request.form.get("handle")
+        print(tweeterhandle)
         if(tweeterhandle == ''):
             print("no handle")
         else:

@@ -48,7 +48,7 @@ class TwitterClient(object):
         using textblob's sentiment method
         '''
         # create TextBlob object of passed tweet text
-        analysis = TextBlob(self.clean_tweet(tweet))
+        analysis = TextBlob(tweet)
         # set sentiment
         if analysis.sentiment.polarity > 0:
             self.bar_y[2]+=1
@@ -88,11 +88,12 @@ class TwitterClient(object):
                 transtweets=translations.text
                 # empty dictionary to store required params of a tweet
                 parsed_tweet = {}
- 
+                #cleaning tweets
+                cleantweet=self.clean_tweet(transtweets)
                 # saving text of tweet
-                parsed_tweet['text'] =  transtweets
+                parsed_tweet['text'] =  cleantweet
                 # saving sentiment of tweet
-                parsed_tweet['sentiment'] = self.get_tweet_sentiment(transtweets)
+                parsed_tweet['sentiment'] = self.get_tweet_sentiment(cleantweet)
  
                 # appending parsed tweet to tweets list
                 if tweet.retweet_count > 0:

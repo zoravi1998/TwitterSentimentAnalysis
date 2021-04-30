@@ -56,17 +56,16 @@
         <div class="error" style="color: red"></div>
         <font color="#47525C"
           ><h2><p style="margin-left: 180px">Enter Twitter Account Name</p></h2>
-          <form action="{{ url_for("index")}}" method="post">
+          <form action="{{ url_for('index') }}" method="post">
             <input type="text" name="handle" id="handle"style="margin-left: 200px"/>
-            <button type="submit">Sumbit</button>
+            <button id="myButton"type="submit">Sumbit</button>
           </form>
         </font>
-        <!--<button id="myButton" >View Result</button>
         <script type="text/javascript">
             document.getElementById("myButton").onclick = function () {
                 window.open("/result",'_blank');
             };
-        </script>-->
+        </script>
 
         <hr color="#1E90FF" />
         <br />
