@@ -83,7 +83,7 @@ class TwitterClient(object):
                 
                 #Bilangual Translation to english
                 sent=tweet.text
-                sent=str(sent.encode('unicode-escape').decode('ASCII'))
+                #sent=str(sent.encode('unicode-escape').decode('ASCII'))
                 translations = translator.translate(sent,dest="en")
                 transtweets=translations.text
                 # empty dictionary to store required params of a tweet
