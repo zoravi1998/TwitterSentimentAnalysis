@@ -12,6 +12,7 @@ class TwitterClient(object):
     bar_y=[0,0,0]
     scatter_x=[]
     scatter_y=[]
+    hashtag_list=[]
     def __init__(self):
         '''
         Class constructor or initialization method.
@@ -40,7 +41,23 @@ class TwitterClient(object):
         special characters
         using simple regex statements.
         '''
-        return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ",tweet).split())
+        hashtags=[]
+        ctweet=''
+        # splitting the text into words
+        try:
+            for word in tweet.split():
+                # checking the first charcter of every word
+                if word[0] == '#':
+                    # adding the word to the hashtag_list
+                    patt = re.compile('(\s*)'+word+'(\s*)')
+                    tweet=''.join(patt.sub(' ', tweet))
+                    hashtags.append(word)
+
+            self.hashtag_list.append(hashtags)
+            ctweet= ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)",' ',tweet).split())
+        except Exception as e:
+            print(e.__class__,tweet,sep='\n')
+        return ctweet
  
     def get_tweet_sentiment(self, tweet):
         '''
@@ -51,7 +68,7 @@ class TwitterClient(object):
         analysis = TextBlob(tweet)
         # set sentiment
         if analysis.sentiment.polarity > 0:
-            self.bar_y[2]+=1
+            self.bar_y[0]+=1
             self.scatter_y.append(analysis.sentiment.polarity)
             self.scatter_x.append('pos')
             return 'positive'
@@ -61,12 +78,12 @@ class TwitterClient(object):
             self.scatter_x.append('neu')
             return 'neutral'
         else:
-            self.bar_y[0]+=1
+            self.bar_y[2]+=1
             self.scatter_y.append(analysis.sentiment.polarity)
             self.scatter_x.append('neg')
             return 'negative'
  
-    def get_tweets(self, query, count ):
+    def get_tweets(self, query, count = 10):
         '''
         Main function to fetch tweets and parse them.
         '''
@@ -82,18 +99,19 @@ class TwitterClient(object):
             for tweet in fetched_tweets:
                 
                 #Bilangual Translation to english
-                sent=tweet.text
+                rawtweet=tweet.text
+                cleantweet = self.clean_tweet(rawtweet)
                 #sent=str(sent.encode('unicode-escape').decode('ASCII'))
-                translations = translator.translate(sent,dest="en")
-                transtweets=translations.text
+                translations = translator.translate(cleantweet,dest="en")
+                transtweet=translations.text
+                
                 # empty dictionary to store required params of a tweet
                 parsed_tweet = {}
-                #cleaning tweets
-                cleantweet=self.clean_tweet(transtweets)
+ 
                 # saving text of tweet
                 parsed_tweet['text'] =  cleantweet
                 # saving sentiment of tweet
-                parsed_tweet['sentiment'] = self.get_tweet_sentiment(cleantweet)
+                parsed_tweet['sentiment'] = self.get_tweet_sentiment(transtweet)
  
                 # appending parsed tweet to tweets list
                 if tweet.retweet_count > 0:
